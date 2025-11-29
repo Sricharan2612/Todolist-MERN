@@ -1,0 +1,36 @@
+.task-list {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 20px;
+    grid-template-columns: 60px 1fr 2fr .5fr;
+}
+
+.list-header {
+    font-weight: bold;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+
+.list-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+}
+
+.delete-btn {
+    width: 100%;
+    padding: 6px;
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-btn:hover {
+    background-color: #ac0909;
+}

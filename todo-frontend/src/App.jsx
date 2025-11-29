@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import AddTask from "./components/AddTask";
-import TaskList from "./components/TaskList";
+import List from "./components/List";
 
 function App() {
 	return (
@@ -14,8 +14,8 @@ function App() {
 					element={<AddTask />}
 				/>
 				<Route
-					path="/add-task"
-					element={<TaskList />}
+					path="/"
+					element={<List />}
 				/>
 			</Routes>
 		</div>
