@@ -1,42 +1,60 @@
-import React, { useState } from "react";
-import "../styles/addtask.css";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const AddTask = () => {
+const UpdateTask = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const { id } = location.state;
 	const [taskData, setTaskData] = useState({
 		title: "",
 		description: "",
 	});
 
+	useEffect(() => {
+		handleGetTaskData();
+	}, []);
+
+	const handleGetTaskData = async () => {
+		const response = await fetch(`http://localhost:3100/task/${id}`);
+		const result = await response.json();
+
+		if (result.success) {
+			setTaskData(result.result);
+		} else {
+			console.log("error in getting task data");
+		}
+	};
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
+
 		setTaskData((prev) => ({
 			...prev,
 			[name]: value,
 		}));
 	};
 
-	const handleAddNewTask = async () => {
-		console.log(taskData);
-
-		const response = await fetch("http://localhost:3100/add-task", {
-			method: "POST",
+	const handleUpdateTask = async () => {
+		const response = await fetch(`http://localhost:3100/update-task/${id}`, {
+			method: "PATCH",
 			body: JSON.stringify(taskData),
 			headers: {
 				"Content-Type": "application/json",
 			},
 		});
-		const result = response.json();
-		if (result) {
+
+		const result = await response.json();
+
+		if (result.success) {
 			navigate("/");
-			console.log("New task added");
+		} else {
+			console.log("error in updating task");
 		}
 	};
 
 	return (
 		<div className="container">
-			<h1>Add New Task</h1>
+			<h1>Update Task</h1>
 			<div>
 				<label htmlFor="title">Title</label>
 				<input
@@ -55,14 +73,14 @@ const AddTask = () => {
 					onChange={handleChange}
 				></textarea>
 				<button
-					onClick={handleAddNewTask}
+					onClick={handleUpdateTask}
 					className="add-btn"
 				>
-					Add New Task
+					Update Task
 				</button>
 			</div>
 		</div>
 	);
 };
 
-export default AddTask;
+export default UpdateTask;
