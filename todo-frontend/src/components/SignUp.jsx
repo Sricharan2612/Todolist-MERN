@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
 	const [userData, setUserData] = useState({
@@ -59,6 +60,12 @@ const SignUp = () => {
 				>
 					Sign Up
 				</button>
+				<Link
+					className="link"
+					to="/login"
+				>
+					Login
+				</Link>
 			</div>
 		</div>
 	);

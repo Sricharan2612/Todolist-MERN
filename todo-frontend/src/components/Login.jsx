@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
 	const [userData, setUserData] = useState({
@@ -15,7 +16,7 @@ const Login = () => {
 	};
 	return (
 		<div className="container">
-			<h1>Sign Up</h1>
+			<h1>Login</h1>
 			<div>
 				<label htmlFor="email">Email</label>
 				<input
@@ -47,8 +48,14 @@ const Login = () => {
 						cursor: "pointer",
 					}}
 				>
-					Log In
+					Login
 				</button>
+				<Link
+					className="link"
+					to="/signup"
+				>
+					Sign Up
+				</Link>
 			</div>
 		</div>
 	);
