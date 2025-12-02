@@ -59,9 +59,9 @@ const List = () => {
 	};
 
 	const handleDeleteMultiple = async () => {
-		const response = await fetch(`http://localhost:3100/delete-multiple/`, {
-			method: "DELETE ",
-			body: JSON.stringify({ ids: selectedTasks }),
+		const response = await fetch(`http://localhost:3100/delete-multiple`, {
+			method: "DELETE",
+			body: JSON.stringify(selectedTasks),
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -70,6 +70,7 @@ const List = () => {
 		const result = await response.json();
 		if (result.success) {
 			console.log("Tasks deleted successfully");
+			setSelectedTasks([]);
 			getList();
 		} else {
 			console.log("tasks not deleted");

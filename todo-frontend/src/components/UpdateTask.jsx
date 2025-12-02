@@ -35,7 +35,7 @@ const UpdateTask = () => {
 	};
 
 	const handleUpdateTask = async () => {
-		const response = await fetch(`http://localhost:3100/update-task/${id}`, {
+		const response = await fetch(`http://localhost:3100/update-task`, {
 			method: "PATCH",
 			body: JSON.stringify(taskData),
 			headers: {

@@ -69,22 +69,22 @@ app.delete("/delete-task/:id", async (req, resp) => {
 });
 
 app.delete("/delete-multiple", async (req, resp) => {
-	const id = req.body;
 	const db = await connection();
 	const collection = db.collection(collectionName);
-	const deleteFilter = { _id: new ObjectId(id) };
-	const deleteOPtions = req.body.ids
-	const result = await collection.deleteMany(deleteFilter);
+	const ids = req.body;
+	const deleteTaskIds = ids.map((item) => new ObjectId(item));
+	// const deleteFilter = { _id: { $in: deleteTaskIds } };
+	const result = await collection.deleteMany({ _id: { $in: deleteTaskIds } });
 
 	if (result) {
 		resp.send({
-			message: "Task deleted successfully",
+			message: "Tasks deleted successfully",
 			success: true,
 			result,
 		});
 	} else {
 		resp.send({
-			message: "Task not deleted",
+			message: "Tasks not deleted",
 			success: false,
 			result,
 		});
@@ -112,11 +112,12 @@ app.get("/task/:id", async (req, resp) => {
 	}
 });
 
-app.patch("/update-task/:id", async (req, resp) => {
+app.patch("/update-task", async (req, resp) => {
 	const db = await connection();
 	const collection = db.collection(collectionName);
-	const filter = { _id: new ObjectId(req.params.id) };
-	const result = await collection.updateOne(filter, { $set: req.body });
+	const { _id, ...fields } = req.body;
+	const filter = { _id: new ObjectId(_id) };
+	const result = await collection.updateOne(filter, { $set: fields });
 
 	if (result) {
 		resp.send({
