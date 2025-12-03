@@ -1,11 +1,18 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+	const navigate = useNavigate();
 	const [userData, setUserData] = useState({
 		email: "",
 		password: "",
 	});
+
+	useEffect(() => {
+		if (localStorage.getItem("login")) {
+			navigate("/");
+		}
+	}, []);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
@@ -30,6 +37,10 @@ const Login = () => {
 		if (result.success) {
 			console.log(result);
 			document.cookie = `token=${result.token}`;
+			localStorage.setItem("login", userData.email);
+			navigate("/");
+		} else {
+			alert("Try after sometime");
 		}
 	};
 

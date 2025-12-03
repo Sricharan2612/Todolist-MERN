@@ -6,6 +6,7 @@ import List from "./components/List";
 import UpdateTask from "./components/UpdateTask";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
 	return (
@@ -20,18 +21,20 @@ function App() {
 					path="/login"
 					element={<Login />}
 				/>
-				<Route
-					path="/add-task"
-					element={<AddTask />}
-				/>
-				<Route
-					path="/update-task"
-					element={<UpdateTask />}
-				/>
-				<Route
-					path="/"
-					element={<List />}
-				/>
+				<Route element={<ProtectedRoutes />}>
+					<Route
+						path="/add-task"
+						element={<AddTask />}
+					/>
+					<Route
+						path="/update-task"
+						element={<UpdateTask />}
+					/>
+					<Route
+						path="/"
+						element={<List />}
+					/>
+				</Route>
 			</Routes>
 		</div>
 	);
