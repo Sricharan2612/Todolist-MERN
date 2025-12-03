@@ -74,7 +74,7 @@ app.post("/login", async (req, resp) => {
 	}
 });
 
-app.post("/add-task", async (req, resp) => {
+app.post("/add-task", verifyJWTToken, async (req, resp) => {
 	const db = await connection();
 	const collection = db.collection(collectionName);
 	const result = await collection.insertOne(req.body);
@@ -114,7 +114,7 @@ app.get("/tasks", verifyJWTToken, async (req, resp) => {
 		});
 	}
 });
-app.delete("/delete-task/:id", async (req, resp) => {
+app.delete("/delete-task/:id", verifyJWTToken, async (req, resp) => {
 	const id = req.params.id;
 	const db = await connection();
 	const collection = db.collection(collectionName);
@@ -136,7 +136,7 @@ app.delete("/delete-task/:id", async (req, resp) => {
 	}
 });
 
-app.delete("/delete-multiple", async (req, resp) => {
+app.delete("/delete-multiple", verifyJWTToken, async (req, resp) => {
 	const db = await connection();
 	const collection = db.collection(collectionName);
 	const ids = req.body;
@@ -159,7 +159,7 @@ app.delete("/delete-multiple", async (req, resp) => {
 	}
 });
 
-app.get("/task/:id", async (req, resp) => {
+app.get("/task/:id", verifyJWTToken, async (req, resp) => {
 	const db = await connection();
 	const collection = db.collection(collectionName);
 	const filter = { _id: new ObjectId(req.params.id) };
@@ -180,7 +180,7 @@ app.get("/task/:id", async (req, resp) => {
 	}
 });
 
-app.patch("/update-task", async (req, resp) => {
+app.patch("/update-task", verifyJWTToken, async (req, resp) => {
 	const db = await connection();
 	const collection = db.collection(collectionName);
 	const { _id, ...fields } = req.body;

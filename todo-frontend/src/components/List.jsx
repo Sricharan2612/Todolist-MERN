@@ -23,13 +23,16 @@ const List = () => {
 
 	const handleDeleteTask = async (id) => {
 		const response = await fetch(`http://localhost:3100/delete-task/${id}`, {
-			method: "DELETE ",
+			method: "DELETE",
+			credentials: "include",
 		});
 
 		const result = await response.json();
 		if (result.success) {
 			console.log("Task deleted successfully");
 			getList();
+		} else {
+			alert("Error in deleting task");
 		}
 	};
 
@@ -63,6 +66,7 @@ const List = () => {
 	const handleDeleteMultiple = async () => {
 		const response = await fetch(`http://localhost:3100/delete-multiple`, {
 			method: "DELETE",
+			credentials: "include",
 			body: JSON.stringify(selectedTasks),
 			headers: {
 				"Content-Type": "application/json",
@@ -75,7 +79,7 @@ const List = () => {
 			setSelectedTasks([]);
 			getList();
 		} else {
-			console.log("tasks not deleted");
+			alert("tasks not deleted");
 		}
 	};
 

@@ -15,7 +15,9 @@ const UpdateTask = () => {
 	}, []);
 
 	const handleGetTaskData = async () => {
-		const response = await fetch(`http://localhost:3100/task/${id}`);
+		const response = await fetch(`http://localhost:3100/task/${id}`, {
+			credentials: "include",
+		});
 		const result = await response.json();
 
 		if (result.success) {
@@ -37,6 +39,7 @@ const UpdateTask = () => {
 	const handleUpdateTask = async () => {
 		const response = await fetch(`http://localhost:3100/update-task`, {
 			method: "PATCH",
+			credentials: "include",
 			body: JSON.stringify(taskData),
 			headers: {
 				"Content-Type": "application/json",
@@ -48,7 +51,7 @@ const UpdateTask = () => {
 		if (result.success) {
 			navigate("/");
 		} else {
-			console.log("error in updating task");
+			alert("error in updating task");
 		}
 	};
 

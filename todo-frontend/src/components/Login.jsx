@@ -38,6 +38,7 @@ const Login = () => {
 			console.log(result);
 			document.cookie = `token=${result.token}`;
 			localStorage.setItem("login", userData.email);
+			window.dispatchEvent(new Event("localStorage-change"))
 			navigate("/");
 		} else {
 			alert("Try after sometime");

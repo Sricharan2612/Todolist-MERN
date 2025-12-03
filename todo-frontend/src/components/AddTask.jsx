@@ -22,15 +22,19 @@ const AddTask = () => {
 
 		const response = await fetch("http://localhost:3100/add-task", {
 			method: "POST",
+			credentials: "include",
 			body: JSON.stringify(taskData),
 			headers: {
 				"Content-Type": "application/json",
 			},
 		});
-		const result = response.json();
-		if (result) {
+		const result = await response.json();
+		console.log(result.success);
+		if (result.success) {
 			navigate("/");
 			console.log("New task added");
+		} else {
+			alert("Error in adding task");
 		}
 	};
 
