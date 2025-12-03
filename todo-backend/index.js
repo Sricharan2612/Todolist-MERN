@@ -2,10 +2,72 @@ import express from "express";
 import { collectionName, connection } from "./dbconfig.js";
 import cors from "cors";
 import { ObjectId } from "mongodb";
+import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
+
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
+
+app.post("/signup", async (req, resp) => {
+	const userData = req.body;
+
+	if (userData.email && userData.password) {
+		const db = await connection();
+		const collection = db.collection("users");
+		const result = await collection.insertOne(userData);
+
+		if (result) {
+			jwt.sign(userData, "Google", { expiresIn: "5d" }, (error, token) => {
+				resp.send({
+					message: "sign up successful",
+					success: true,
+					token,
+				});
+			});
+		}
+	} else {
+		resp.send({
+			message: "sign up unsuccessful",
+			success: false,
+		});
+	}
+});
+
+app.post("/login", async (req, resp) => {
+	const userData = req.body;
+
+	if (userData.email && userData.password) {
+		const db = await connection();
+		const collection = db.collection("users");
+		const result = await collection.findOne({
+			email: userData.email,
+			password: userData.password,
+		});
+
+		if (result) {
+			jwt.sign(userData, "Google", { expiresIn: "5d" }, (error, token) => {
+				resp.send({
+					message: "Login Successful",
+					success: true,
+					token,
+				});
+			});
+		} else {
+			resp.send({
+				message: "User not found",
+				success: false,
+			});
+		}
+	} else {
+		resp.send({
+			message: "login unsuccessful",
+			success: false,
+		});
+	}
+});
 
 app.post("/add-task", async (req, resp) => {
 	const db = await connection();

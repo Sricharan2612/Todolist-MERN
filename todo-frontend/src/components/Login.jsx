@@ -11,9 +11,28 @@ const Login = () => {
 		const { name, value } = e.target;
 
 		setUserData((prev) => ({
+			...prev,
 			[name]: value,
 		}));
 	};
+
+	const handleLogin = async () => {
+		const response = await fetch("http://localhost:3100/login", {
+			method: "POST",
+			body: JSON.stringify(userData),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+
+		const result = await response.json();
+
+		if (result.success) {
+			console.log(result);
+			document.cookie = `token=${result.token}`;
+		}
+	};
+
 	return (
 		<div className="container">
 			<h1>Login</h1>
@@ -36,6 +55,7 @@ const Login = () => {
 				/>
 
 				<button
+					onClick={handleLogin}
 					className="submit"
 					style={{
 						width: "100%",

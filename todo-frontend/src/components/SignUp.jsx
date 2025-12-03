@@ -12,8 +12,26 @@ const SignUp = () => {
 		const { name, value } = e.target;
 
 		setUserData((prev) => ({
+			...prev,
 			[name]: value,
 		}));
+	};
+
+	const handleSignup = async () => {
+		const response = await fetch("http://localhost:3100/signup", {
+			method: "POST",
+			body: JSON.stringify(userData),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+
+		const result = await response.json();
+
+		if (result.success) {
+			console.log(result);
+			document.cookie = `token=${result.token}`;
+		}
 	};
 
 	return (
@@ -46,6 +64,7 @@ const SignUp = () => {
 				/>
 
 				<button
+					onClick={handleSignup}
 					className="submit"
 					style={{
 						width: "100%",

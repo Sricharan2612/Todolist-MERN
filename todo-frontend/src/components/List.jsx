@@ -12,7 +12,9 @@ const List = () => {
 	}, []);
 
 	const getList = async () => {
-		const response = await fetch("http://localhost:3100/tasks");
+		const response = await fetch("http://localhost:3100/tasks", {
+			credentials: "include",
+		});
 		const data = await response.json();
 		if (data.success) {
 			setTaskData(data.result);
