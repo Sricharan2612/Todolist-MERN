@@ -8,7 +8,12 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(
+	cors({
+		origin: "http://localhost:5173",
+		credentials: true,
+	})
+);
 app.use(cookieParser());
 
 app.post("/signup", async (req, resp) => {
@@ -89,8 +94,9 @@ app.post("/add-task", async (req, resp) => {
 	}
 });
 
-app.get("/tasks", async (req, resp) => {
+app.get("/tasks", verifyJWTToken, async (req, resp) => {
 	const db = await connection();
+
 	const collection = db.collection(collectionName);
 	const result = await collection.find().toArray();
 
@@ -195,5 +201,18 @@ app.patch("/update-task", async (req, resp) => {
 		});
 	}
 });
+
+function verifyJWTToken(req, resp, next) {
+	const token = req.cookies["token"];
+	console.log(token);
+	jwt.verify(token, "Google", (error, decodedToken) => {
+		if (error) {
+			resp.send({ message: "Invalid Token", success: false });
+			return;
+		}
+		console.log(decodedToken);
+		next();
+	});
+}
 
 app.listen(3100);
